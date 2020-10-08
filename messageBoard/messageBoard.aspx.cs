@@ -1,9 +1,13 @@
 ﻿using Antlr.Runtime.Tree;
+using Microsoft.Ajax.Utilities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -17,6 +21,7 @@ namespace messageBoard
             if (!IsPostBack)
             {
                 GridViewBind();
+                //Response.CacheControl
             }
    
         }
@@ -58,7 +63,6 @@ namespace messageBoard
             else
             {
                 control.Visible = true;
-
             }
         }
         protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)
@@ -70,13 +74,42 @@ namespace messageBoard
         protected void txtPageSize_TextChanged(object sender, EventArgs e)
         {
             TextBox txt = (TextBox)sender;
-            Response.Redirect("messageBoard.aspx?pageSize="+txt.Text);
+
+            try
+            {
+                Convert.ToInt32(txt.Text);
+                Response.Redirect("messageBoard.aspx?pageSize=" + txt.Text);
+            }
+            catch (Exception)
+            {
+                //this.Page.RegisterStartupScript("", "< script> alert('彈出的訊息'); </ script > ");
+                //Page.RegisterStartupScript(" ", "< script> alert('彈出的訊息'); </ script >");
+                ClientScript.RegisterStartupScript(typeof(string), "", "<script> alert('錯誤'); </script>");
+                //p1類型(本頁)typeof(string) or page.GetType,p2事件名,p3 script  
+                //Response.Write("<script language='javascript'>");
+                //Response.Write("alert('輸入格式錯誤')");
+                //Response.Write("</script>");
+            }
+
+            //desert
+            //if (Regex.IsMatch(txt.Text, @"^[0-9]$"))
+            //{
+            //    Response.Redirect("messageBoard.aspx?pageSize=" + txt.Text);
+            //}
+            //else
+            //{
+            //    Response.Write("<script language='javascript'>");
+            //    Response.Write("alert('輸入格式錯誤')");
+            //    Response.Write("</script>");
+            //}
+
         }
 
         protected void GridView1_Init(object sender, EventArgs e)
         {
             var pageSize = Request.QueryString["pageSize"] ?? "5";
             GridView1.PageSize = Convert.ToInt32(pageSize);
+
             
         }
 
