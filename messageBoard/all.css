@@ -146,10 +146,10 @@ a {
 }
 
 body {
-    max-width: 790px;
+    /* background-color: red; */
+    max-width: 1024px;
     margin: 0 auto;
     font-size: 20px;
-    box-sizing: border-box;
 }
 
 .pageUl {
@@ -174,4 +174,8 @@ input {
     background: white;
     border: 1px solid;
     box-sizing: border-box;
+}
+
+#GridView1_txtPageSize {
+    font-size: initial;
 }

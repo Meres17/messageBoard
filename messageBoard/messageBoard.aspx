@@ -5,14 +5,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
-        <link href="all.css" rel="stylesheet" />
+    <link href="all.css"  rel="stylesheet" />
 
 </head>
 <body>
     <form id="form1" runat="server">
         <div>
             <input type="button" value="發表文章" onclick="location.href='postResponse.aspx'" />
-        <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" CellPadding="4" DataKeyNames="id" ForeColor="#333333" GridLines="None">
+        <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" CellPadding="4" DataKeyNames="id" ForeColor="#333333" GridLines="None" PageSize="5" AllowPaging="True" OnPageIndexChanging="GridView1_PageIndexChanging" OnInit="GridView1_Init" OnRowDataBound="GridView1_RowDataBound">
             <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
             <Columns>
                 <asp:BoundField DataField="id" HeaderText="編號" SortExpression="id" InsertVisible="False" ReadOnly="True" />
@@ -39,6 +39,19 @@
             <FooterStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
             <HeaderStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
             <PagerStyle BackColor="#284775" ForeColor="White" HorizontalAlign="Center" />
+            <PagerTemplate>
+                <asp:Button ID="btnPageTop" runat="server" Text="第一頁" CommandArgument="First" CommandName="Page" />
+                <span>第</span>
+                <asp:DropDownList runat="server" ID="dropPage" AutoPostBack="True" OnSelectedIndexChanged="dropPage_SelectedIndexChanged" style="width: 95px"></asp:DropDownList>
+
+                <span>頁，每頁顯示</span>
+                <asp:TextBox runat="server" ID="txtPageSize" AutoPostBack="True" Text="<%# GridView1.PageSize %>" OnTextChanged="txtPageSize_TextChanged" />
+                <span>筆，共<%# ((System.Data.DataTable)GridView1.DataSource).Rows.Count  %>筆</span>
+                
+                <asp:Button ID="btnPagePrev" runat="server" Text="上一頁" CommandArgument="Prev" CommandName="Page" />
+                <asp:Button ID="btnPageNext" runat="server" Text="下一頁" CommandArgument="Next" CommandName="Page" />
+                <asp:Button ID="btnPageBottom" runat="server" Text="最終頁" CommandArgument="Last" CommandName="Page" />
+            </PagerTemplate>
             <RowStyle BackColor="#F7F6F3" ForeColor="#333333" />
             <SelectedRowStyle BackColor="#E2DED6" Font-Bold="True" ForeColor="#333333" />
             <SortedAscendingCellStyle BackColor="#E9E7E2" />
